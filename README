@@ -1,0 +1,56 @@
+Name Game Submission
+
+===============================================================
+====================== API Documentation ====================== 
+===============================================================
+
+** Employees
+    - For ease-of-development (being able to look up employees easily by ID,
+      primarily), I created a -very- simple employee API used to list all the
+      employees, or give details of a single employee
+
+* Employee Query Filters:
+- Filters may be applied when searching for employees
+- Supported filter params are "id", "firstName", and "lastName"
+
+GET the list of employees
+- curl -u willowtree:password http://localhost:1234/api/1.0/employees
+
+GET a single employee by ID
+- curl -u willowtree:password http://localhost:1234/api/1.0/employees/<id>
+
+----------------------------------------------------------------------------
+
+** Game
+    - There were a number of things I would have liked to continue to develop
+      for the game API, however I simply ran out of time. I implemented a basic
+      API for listing played games, getting specific game details, deleting a
+      game, creating a game, and solving a game.
+
+GET past and present games:
+- curl -u willowtree:password http://localhost:1234/api/1.0/games
+
+GET details of an existing game:
+- curl -u willowtree:password http://localhost:1234/api/1.0/games/<id>
+
+Solving a game
+- Done through a PUT (as opposed to a POST), as the game state is being changed
+- curl -u willowtree:password http://localhost:1234/api/1.0/games/<id> -X PUT -d '{"solution": "<employee_id>"}'
+
+POSTing to create a new game
+- We can specify a game-type parameter of 'matt' or 'standard'
+- curl -u willowtree:password http://localhost:1234/api/1.0/games?game-type=matt -X POST
+
+DELETing a Game
+- Remove a game from being tracked
+- curl -u willowtree:password http://localhost:1234/api/1.0/games/<id> -X DELETE
+
+
+----------------------------------------------------------------------------
+
+** Leaderboard
+    - Simple leaderboard which allows us to see which users have solved the
+      most games. The only interaction I had time for was a simple GET
+
+GET leaderboard
+curl -u willowtree:password http://localhost:1234/api/1.0/leaderboard
