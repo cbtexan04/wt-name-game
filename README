@@ -1,6 +1,39 @@
 Name Game Submission
 
 ===============================================================
+========================== Overview ===========================
+===============================================================
+
+The repository is split into two distinct subpackages: data
+and handlers.
+
+The data subpackage does modification of the configuration,
+parsing and filtering of the data, and generation of various
+game components.
+
+The handlers subpackage defines our RegexRouter, as well as
+holds the http handlers that will be called when an endpoint
+regex is matched.
+
+I created two distinct spaces for two purposes: code reuse,
+and unit testing. It's much harder to reuse code when the
+http handlers are mixed in with the actions we want to perform.
+By separating these out, it makes it much easier for other
+projects to import the 'data' subpackage and use functionality
+within that space. Likewise, it's much easier to unit test
+code that's succinct and performs a single action.
+
+To avoid having to use a database (one of the "asks" for this
+project was to have it easily runable out of the box), I used
+local storage via reading/writing to a file. While there is
+a race condition with this approach, adding appropriate mutex
+locking and unlocking would fix it (I had just ran out of time).
+
+The API is split into 3 high level concepts; leaderboard, game,
+and employees. These are better defined in the API Documentation
+section below.
+
+===============================================================
 ====================== API Documentation ====================== 
 ===============================================================
 
