@@ -27,7 +27,7 @@ func GetGameDetails(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Write(w, http.StatusOK, stripSolutions(game))
+	Write(w, http.StatusOK, StripSolutions(game))
 }
 
 func DeleteGame(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +61,7 @@ func GetGames(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Write(w, http.StatusOK, stripSolutions(games...))
+	Write(w, http.StatusOK, StripSolutions(games...))
 }
 
 func NewGame(employees data.Employees) http.HandlerFunc {
@@ -89,7 +89,7 @@ func NewGame(employees data.Employees) http.HandlerFunc {
 			return
 		}
 
-		Write(w, http.StatusOK, stripSolutions(g))
+		Write(w, http.StatusOK, StripSolutions(g))
 	}
 }
 
@@ -148,7 +148,7 @@ func CheckSolution(employees data.Employees) http.HandlerFunc {
 }
 
 // Strip the solutions from unsolved games
-func stripSolutions(games ...data.Game) data.Games {
+func StripSolutions(games ...data.Game) data.Games {
 	newGames := make([]data.Game, len(games))
 	for i, game := range games {
 		newGames[i] = game

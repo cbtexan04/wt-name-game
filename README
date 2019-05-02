@@ -87,3 +87,15 @@ DELETing a Game
 
 GET leaderboard
 curl -u willowtree:password http://localhost:1234/api/1.0/leaderboard
+
+===============================================================
+=========================== Testing ===========================
+===============================================================
+
+Given ample time, I would have created additional unit tests for
+this project. For now, I have slotted out a space within the tests
+directory for tests, with a handful of tests designed to test the
+game structures.
+
+To run the tests, simply navigate to the tests directory and run
+'go test'
