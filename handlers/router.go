@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+// Unfortunately, go does not have built in regexp matching for http
+// handlers. We'll have to build own own to be able to use a regex with
+// our handlers. While we're at it, we can also make our custom router
+// accept which http methods apply on a given regexp
+
 // Route associates a regular expression with an http.Handler
 type Route struct {
 	url     *regexp.Regexp
