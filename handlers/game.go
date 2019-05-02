@@ -27,7 +27,7 @@ func GetGameDetails(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Write(w, http.StatusOK, game)
+	Write(w, http.StatusOK, stripSolutions(game))
 }
 
 func DeleteGame(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +61,7 @@ func GetGames(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Write(w, http.StatusOK, games)
+	Write(w, http.StatusOK, stripSolutions(games...))
 }
 
 func NewGame(employees data.Employees) http.HandlerFunc {
@@ -89,7 +89,10 @@ func NewGame(employees data.Employees) http.HandlerFunc {
 			return
 		}
 
-		Write(w, http.StatusOK, g)
+		new := stripSolutions(g)
+		fmt.Println(new[0].Solution)
+
+		Write(w, http.StatusOK, stripSolutions(g))
 	}
 }
 
@@ -112,7 +115,11 @@ func CheckSolution(employees data.Employees) http.HandlerFunc {
 			return
 		}
 
-		if gid != data.GameSolutionID(solution.Solution) {
+		solved, err := data.IsCorrectSolution(gid, solution.Solution)
+		if err != nil {
+			Error(w, http.StatusInternalServerError, err.Error())
+			return
+		} else if !solved {
 			Error(w, http.StatusBadRequest, "Invalid game solution")
 			return
 		}
@@ -132,6 +139,19 @@ func CheckSolution(employees data.Employees) http.HandlerFunc {
 
 		Write(w, http.StatusOK, response)
 	}
+}
+
+// Strip the solutions from unsolved games
+func stripSolutions(games ...data.Game) data.Games {
+	newGames := make([]data.Game, len(games))
+	for i, game := range games {
+		newGames[i] = game
+		if !game.Solved {
+			newGames[i].Solution = nil
+		}
+	}
+
+	return newGames
 }
 
 func getGameID(re *regexp.Regexp, url string) (id string, err error) {

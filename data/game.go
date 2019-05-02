@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"time"
 )
 
 var (
@@ -14,7 +15,8 @@ var (
 type Games []Game
 
 type Game struct {
-	Solver   string             `json:"solver,omitempty"`
+	Solver   *string            `json:"solver,omitempty"`
+	Solution *string            `json:"solution,omitempty"`
 	Solved   bool               `json:"solved"`
 	GameType string             `json:"game-type"`
 	GameID   string             `json:"id"`
@@ -54,8 +56,9 @@ func NewGame(e Employees, gameType string) (Game, error) {
 		g.Choices[i] = employee.Headshot
 	}
 
-	g.GameID = GameSolutionID(solutionEmployee.ID)
+	g.GameID = GenerateGameURI()
 	g.Message = fmt.Sprintf("Which image is a picture of %s %s?", solutionEmployee.FirstName, solutionEmployee.LastName)
+	g.Solution = &solutionEmployee.ID
 
 	return g, nil
 }
@@ -71,7 +74,7 @@ func UpdateSolver(gameID string, solver string) error {
 		return err
 	}
 
-	games[index].Solver = solver
+	games[index].Solver = &solver
 	games[index].Solved = true
 
 	err = WriteGamesToFile(games, GamePath)
@@ -80,6 +83,25 @@ func UpdateSolver(gameID string, solver string) error {
 	}
 
 	return nil
+}
+
+func IsCorrectSolution(gameID string, gameSolution string) (bool, error) {
+	games, err := LoadGamesFromFile(GamePath)
+	if err != nil {
+		return false, err
+	}
+
+	index := FindGameIndex(games, gameID)
+	if index < 0 {
+		return false, ErrGameNotFound
+	}
+
+	solution := games[index].Solution
+	if solution == nil {
+		return false, errors.New("no solution recorded")
+	}
+
+	return *games[index].Solution == gameSolution, nil
 }
 
 func GetGameDetails(gameID string) (Game, error) {
@@ -96,14 +118,9 @@ func GetGameDetails(gameID string) (Game, error) {
 	return games[index], nil
 }
 
-// We can cheat and use the game ID as a hashed version of the solution. This
-// makes it nice because we can check if a user guessed a solution by simply
-// hashing their solution and seeing if it's equivalent to our game URI. This
-// *does* come with the drawback that eventually someone is going to end up
-// with the same game ID URI, but since this is a proof of concept, it should
-// suffice
-func GameSolutionID(solutionID string) string {
+// Generate a random game URI by hashing the current time
+func GenerateGameURI() string {
 	hasher := md5.New()
-	hasher.Write([]byte(solutionID))
+	hasher.Write([]byte(time.Now().String()))
 	return hex.EncodeToString(hasher.Sum(nil))
 }

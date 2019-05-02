@@ -19,7 +19,11 @@ func GetLeaderboard(w http.ResponseWriter, r *http.Request) {
 	m := make(map[string]int)
 	for _, g := range games {
 		if g.Solved {
-			m[g.Solver] = m[g.Solver] + 1
+			if g.Solver == nil {
+				continue
+			}
+
+			m[*g.Solver] = m[*g.Solver] + 1
 		}
 	}
 
