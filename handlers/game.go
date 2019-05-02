@@ -115,7 +115,16 @@ func CheckSolution(employees data.Employees) http.HandlerFunc {
 			return
 		}
 
-		solved, err := data.IsCorrectSolution(gid, solution.Solution)
+		game, err := data.GetGameDetails(gid)
+		if err != nil {
+			http.Error(w, ErrInvalidURL.Error(), http.StatusInternalServerError)
+			return
+		} else if game.Solved {
+			Error(w, http.StatusBadRequest, "A solved game cannot be solved again")
+			return
+		}
+
+		solved, err := data.IsCorrectSolution(game.GameID, solution.Solution)
 		if err != nil {
 			Error(w, http.StatusInternalServerError, err.Error())
 			return
