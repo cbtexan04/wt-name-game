@@ -89,9 +89,6 @@ func NewGame(employees data.Employees) http.HandlerFunc {
 			return
 		}
 
-		new := stripSolutions(g)
-		fmt.Println(new[0].Solution)
-
 		Write(w, http.StatusOK, stripSolutions(g))
 	}
 }
