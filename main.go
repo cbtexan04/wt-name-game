@@ -58,8 +58,8 @@ func main() {
 // multiple users which could authenticate.
 func handleAuth(h http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		user, pass, ok := r.BasicAuth()
-		if !ok || user != RequiredUser || pass != RequiredPassword {
+		_, pass, ok := r.BasicAuth()
+		if !ok || pass != RequiredPassword {
 			handlers.Error(w, http.StatusInternalServerError, ErrUnauthorized.Error())
 			return
 		}
