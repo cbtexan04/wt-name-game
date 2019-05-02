@@ -1,6 +1,26 @@
 Name Game Submission
 
 ===============================================================
+======================== Dependencies =========================
+===============================================================
+
+A recent version of GoLang (>= 1.8 is required for the sort.Slice
+usage in the leaderboard file).
+
+Altough external libraries would have been helpful (for example,
+the gorilla/mux library for Go), I chose to stick as close to
+what's provided in the native framework for ease of deployment
+for the test project.
+
+===============================================================
+====================== Running the Code =======================
+===============================================================
+
+To run this code, simply set up your go environment, clone this
+repository, and go build. You can then run the wt-test-project
+binary.
+
+===============================================================
 ========================== Overview ===========================
 ===============================================================
 
@@ -72,6 +92,7 @@ Solving a game
 
 POSTing to create a new game
 - We can specify a game-type parameter of 'matt' or 'standard'
+- curl -u willowtree:password http://localhost:1234/api/1.0/games -X POST
 - curl -u willowtree:password http://localhost:1234/api/1.0/games?game-type=matt -X POST
 
 DELETing a Game
@@ -83,10 +104,12 @@ DELETing a Game
 
 ** Leaderboard
     - Simple leaderboard which allows us to see which users have solved the
-      most games. The only interaction I had time for was a simple GET
+      most games. The only interaction I had time for was a simple GET. Limit
+      filtering is available via the limit parameter
 
 GET leaderboard
-curl -u willowtree:password http://localhost:1234/api/1.0/leaderboard
+- curl -u willowtree:password http://localhost:1234/api/1.0/leaderboard
+- curl -u willowtree:password http://localhost:1234/api/1.0/leaderboard?limit=5
 
 ===============================================================
 =========================== Testing ===========================
