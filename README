@@ -130,3 +130,16 @@ game structures.
 
 To run the tests, simply navigate to the tests directory and run
 'go test'
+
+===============================================================
+========================= Future Work =========================
+===============================================================
+
+There are a few things that should be considered for this project
+moving forward:
+
+- Mutex/locking of the configuration file when reading/writing, to
+  avoid possible race conditions
+- Cookie management (might be nice to give the user a cookie instead
+  of having to issue basic auth commands each time)
+- Adding a game start/end time to the configuration
