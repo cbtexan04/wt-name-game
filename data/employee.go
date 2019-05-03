@@ -13,14 +13,13 @@ var ErrNoEmployeeMatch = errors.New("Unable to find employee with specified pref
 type Employees []Employee
 
 type EmployeeHeadshot struct {
-	Type       string  `json:"type"`
-	MimeType   string  `json:"mimeType"`
-	ID         string  `json:"id"`
-	URL        string  `json:"url"`
-	Alt        string  `json:"alt"`
-	Height     int     `json:"height"`
-	Width      int     `json:"width"`
-	EmployeeID *string `json:"employee-id,omitempty"`
+	Type     string `json:"type"`
+	MimeType string `json:"mimeType"`
+	ID       string `json:"id"`
+	URL      string `json:"url"`
+	Alt      string `json:"alt"`
+	Height   int    `json:"height"`
+	Width    int    `json:"width"`
 }
 
 type Employee struct {

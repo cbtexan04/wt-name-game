@@ -15,13 +15,24 @@ var (
 type Games []Game
 
 type Game struct {
-	Solver   *string            `json:"solver,omitempty"`
-	Solution *string            `json:"solution,omitempty"`
-	Solved   bool               `json:"solved"`
-	GameType string             `json:"game-type"`
-	GameID   string             `json:"id"`
-	Message  string             `json:"message"`
-	Choices  []EmployeeHeadshot `json:"employees"`
+	Solver   *string  `json:"solver,omitempty"`
+	Solution *string  `json:"solution,omitempty"`
+	Solved   bool     `json:"solved"`
+	GameType string   `json:"game-type"`
+	GameID   string   `json:"id"`
+	Message  string   `json:"message"`
+	Choices  []Choice `json:"choices"`
+}
+
+// Create a new choices struct; we probably could get away with just using
+// employee.Headshot, but this would mean someone could fairly easily develop a
+// programatic way of creating new games and solving by looking at the alt text
+type Choice struct {
+	MimeType string `json:"mimeType"`
+	URL      string `json:"url"`
+	Height   int    `json:"height"`
+	Width    int    `json:"width"`
+	AnswerID string `json:"answer-id"`
 }
 
 func NewGame(e Employees, gameType string) (Game, error) {
@@ -37,7 +48,7 @@ func NewGame(e Employees, gameType string) (Game, error) {
 
 	g := Game{
 		GameType: gameType,
-		Choices:  make([]EmployeeHeadshot, 6),
+		Choices:  make([]Choice, 6),
 	}
 
 	var solutionEmployee *Employee
@@ -52,8 +63,9 @@ func NewGame(e Employees, gameType string) (Game, error) {
 			solutionEmployee = &employee
 		}
 
-		employee.Headshot.EmployeeID = &employee.ID
-		g.Choices[i] = employee.Headshot
+		newChoice := EmployeeToChoice(employee.Headshot)
+		newChoice.AnswerID = employee.ID
+		g.Choices[i] = newChoice
 	}
 
 	g.GameID = GenerateGameURI()
@@ -83,6 +95,18 @@ func UpdateSolver(gameID string, solver string) error {
 	}
 
 	return nil
+}
+
+// Helper function that lets us easily convert an employee headshot into a
+// stripped down struct with only certain fields available (we don't want to
+// expose all the fields in the employee headshot to the user)
+func EmployeeToChoice(eh EmployeeHeadshot) Choice {
+	return Choice{
+		URL:      eh.URL,
+		Height:   eh.Height,
+		Width:    eh.Width,
+		MimeType: eh.MimeType,
+	}
 }
 
 func IsCorrectSolution(gameID string, gameSolution string) (bool, error) {
