@@ -12,6 +12,7 @@ import (
 var (
 	GameRE        = regexp.MustCompile("/api/1.0/games$")
 	GameDetailsRE = regexp.MustCompile("/api/1.0/games/([^/]+)$")
+	GameChoicesRE = regexp.MustCompile("/api/1.0/games/([^/]+)/choices$")
 )
 
 func GetGameDetails(w http.ResponseWriter, r *http.Request) {
@@ -28,6 +29,22 @@ func GetGameDetails(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Write(w, http.StatusOK, StripSolutions(game))
+}
+
+func GetGameChoices(w http.ResponseWriter, r *http.Request) {
+	gid, err := getIDFromRequest(GameChoicesRE, r.URL.Path)
+	if err != nil {
+		http.Error(w, ErrInvalidURL.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	game, err := data.GetGameDetails(gid)
+	if err != nil {
+		Error(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	Write(w, http.StatusOK, game.Choices)
 }
 
 func DeleteGame(w http.ResponseWriter, r *http.Request) {

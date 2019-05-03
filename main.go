@@ -44,6 +44,7 @@ func main() {
 	router.HandleFunc(handlers.GameDetailsRE, handlers.DeleteGame, "DELETE")
 	router.HandleFunc(handlers.GameDetailsRE, handlers.GetGameDetails, "GET")
 	router.HandleFunc(handlers.GameDetailsRE, handlers.CheckSolution(employees), "PUT")
+	router.HandleFunc(handlers.GameChoicesRE, handlers.GetGameChoices, "GET")
 	router.HandleFunc(handlers.GameRE, handlers.NewGame(employees), "POST")
 	router.HandleFunc(handlers.ListEmployeesRE, handlers.GetEmployees(employees), "GET")
 	router.HandleFunc(handlers.EmployeeDetailRE, handlers.GetEmployeeDetails(employees), "GET")

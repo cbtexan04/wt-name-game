@@ -86,6 +86,9 @@ GET past and present games:
 GET details of an existing game:
 - curl -u willowtree:password http://localhost:1234/api/1.0/games/<id>
 
+GET game choices for an existing game:
+- curl -u willowtree:password http://localhost:1234/api/1.0/games/<id>/choices
+
 Solving a game
 - Done through a PUT (as opposed to a POST), as the game state is being changed
 - curl -u willowtree:password http://localhost:1234/api/1.0/games/<id> -X PUT -d '{"solution": "<employee_id>"}'
