@@ -49,12 +49,12 @@ func FindGameIndex(games Games, gameID string) int {
 	return -1
 }
 
-func DeleteGame(games Games, gameID string) Games {
+func DeleteGame(games Games, gameID string) (Games, error) {
 	for i, game := range games {
 		if game.GameID == gameID {
-			return append(games[:i], games[i+1:]...)
+			return append(games[:i], games[i+1:]...), nil
 		}
 	}
 
-	return games
+	return games, ErrGameNotFound
 }

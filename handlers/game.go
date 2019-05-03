@@ -60,7 +60,11 @@ func DeleteGame(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	games = data.DeleteGame(games, gid)
+	games, err = data.DeleteGame(games, gid)
+	if err != nil {
+		Error(w, http.StatusNotFound, err.Error())
+		return
+	}
 
 	err = data.WriteGamesToFile(games, data.GamePath)
 	if err != nil {

@@ -69,7 +69,12 @@ func TestDeleteGame(t *testing.T) {
 	for i := 0; i < len(games); i++ {
 		// Delete the first one
 		deleteID := games[0].GameID
-		games = data.DeleteGame(games, deleteID)
+		var err error
+
+		games, err = data.DeleteGame(games, deleteID)
+		if err != nil {
+			t.Fatal(err.Error())
+		}
 
 		if contains(games, deleteID) {
 			t.Fatal("Game index was not deleted")
