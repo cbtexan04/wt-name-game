@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/cbtexan04/wt-test-project/data"
-	"github.com/cbtexan04/wt-test-project/handlers"
+	"github.com/cbtexan04/wt-name-game/data"
+	"github.com/cbtexan04/wt-name-game/handlers"
 )
 
 const (

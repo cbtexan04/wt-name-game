@@ -17,7 +17,7 @@ for the test project.
 ===============================================================
 
 To run this code, simply set up your go environment, clone this
-repository, and go build. You can then run the wt-test-project
+repository, and go build. You can then run the wt-name-game
 binary.
 
 ===============================================================

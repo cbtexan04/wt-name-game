@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/cbtexan04/wt-test-project/data"
+	"github.com/cbtexan04/wt-name-game/data"
 )
 
 var ErrInvalidLimit = errors.New("Invalid limit; must be >= 1")

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/cbtexan04/wt-test-project/data"
+	"github.com/cbtexan04/wt-name-game/data"
 )
 
 var (

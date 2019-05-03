@@ -3,8 +3,8 @@ package tests
 import (
 	"testing"
 
-	"github.com/cbtexan04/wt-test-project/data"
-	"github.com/cbtexan04/wt-test-project/handlers"
+	"github.com/cbtexan04/wt-name-game/data"
+	"github.com/cbtexan04/wt-name-game/handlers"
 )
 
 func TestStripSolutions(t *testing.T) {
