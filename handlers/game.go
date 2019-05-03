@@ -18,7 +18,7 @@ var (
 func GetGameDetails(w http.ResponseWriter, r *http.Request) {
 	gid, err := getIDFromRequest(GameDetailsRE, r.URL.Path)
 	if err != nil {
-		http.Error(w, ErrInvalidURL.Error(), http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, ErrInvalidURL.Error())
 		return
 	}
 
@@ -34,7 +34,7 @@ func GetGameDetails(w http.ResponseWriter, r *http.Request) {
 func GetGameChoices(w http.ResponseWriter, r *http.Request) {
 	gid, err := getIDFromRequest(GameChoicesRE, r.URL.Path)
 	if err != nil {
-		http.Error(w, ErrInvalidURL.Error(), http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, ErrInvalidURL.Error())
 		return
 	}
 
@@ -50,7 +50,7 @@ func GetGameChoices(w http.ResponseWriter, r *http.Request) {
 func DeleteGame(w http.ResponseWriter, r *http.Request) {
 	gid, err := getIDFromRequest(GameDetailsRE, r.URL.Path)
 	if err != nil {
-		http.Error(w, ErrInvalidURL.Error(), http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, ErrInvalidURL.Error())
 		return
 	}
 
@@ -118,7 +118,7 @@ func CheckSolution(employees data.Employees) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		gid, err := getIDFromRequest(GameDetailsRE, r.URL.Path)
 		if err != nil {
-			http.Error(w, ErrInvalidURL.Error(), http.StatusInternalServerError)
+			Error(w, http.StatusInternalServerError, ErrInvalidURL.Error())
 			return
 		}
 
@@ -131,7 +131,7 @@ func CheckSolution(employees data.Employees) http.HandlerFunc {
 
 		game, err := data.GetGameDetails(gid)
 		if err != nil {
-			http.Error(w, ErrInvalidURL.Error(), http.StatusInternalServerError)
+			Error(w, http.StatusInternalServerError, ErrInvalidURL.Error())
 			return
 		} else if game.Solved {
 			Error(w, http.StatusBadRequest, "A solved game cannot be solved again")

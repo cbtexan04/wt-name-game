@@ -36,7 +36,7 @@ func GetEmployeeDetails(employees data.Employees) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := getIDFromRequest(EmployeeDetailRE, r.URL.Path)
 		if err != nil {
-			http.Error(w, ErrInvalidURL.Error(), http.StatusInternalServerError)
+			Error(w, http.StatusInternalServerError, ErrInvalidURL.Error())
 			return
 		}
 
