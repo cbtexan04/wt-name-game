@@ -81,7 +81,12 @@ GET a single employee by ID
       game, creating a game, and solving a game.
 
 GET past and present games:
+- Filters are available for use to sort through the games. Note that a game
+  will be present if it matches any single filter (effecitvely an OR operation)
 - curl -u willowtree:password http://localhost:1234/api/1.0/games
+- curl -u willowtree:password http://localhost:1234/api/1.0/games?solver=<user>
+- curl -u willowtree:password http://localhost:1234/api/1.0/games?id=<id>
+- curl -u willowtree:password http://localhost:1234/api/1.0/games?id=<game-type>
 
 GET details of an existing game:
 - curl -u willowtree:password http://localhost:1234/api/1.0/games/<id>

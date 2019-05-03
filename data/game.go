@@ -148,3 +148,36 @@ func GenerateGameURI() string {
 	hasher.Write([]byte(time.Now().String()))
 	return hex.EncodeToString(hasher.Sum(nil))
 }
+
+type GameFilter struct {
+	GameType string
+	Solver   string
+	GameID   string
+}
+
+func (f GameFilter) IsEmpty() bool {
+	return f.GameType == "" && f.Solver == "" && f.GameID == ""
+}
+
+// Allow us to filter games by various facets. Any gamee that matches
+// -any- of the filter criteria will be added
+func (g Games) FilterGames(f GameFilter) Games {
+	// If no filter is being used, we can just return the full list
+	if f.IsEmpty() {
+		return g
+	}
+
+	filterList := make(Games, 0, len(g))
+
+	for _, game := range g {
+		if f.GameID != "" && game.GameID == f.GameID {
+			filterList = append(filterList, game)
+		} else if f.Solver != "" && game.Solver != nil && *game.Solver == f.Solver {
+			filterList = append(filterList, game)
+		} else if f.GameType != "" && game.GameType == f.GameType {
+			filterList = append(filterList, game)
+		}
+	}
+
+	return filterList
+}

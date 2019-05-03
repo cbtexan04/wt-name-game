@@ -78,6 +78,13 @@ func GetGames(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	f := data.GameFilter{
+		GameType: r.URL.Query().Get("game-type"),
+		Solver:   r.URL.Query().Get("solver"),
+		GameID:   r.URL.Query().Get("id"),
+	}
+
+	games = games.FilterGames(f)
 	Write(w, http.StatusOK, StripSolutionFromMultipleGames(games))
 }
 
