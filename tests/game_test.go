@@ -13,8 +13,8 @@ func TestStripSolutions(t *testing.T) {
 		Solution: &solution,
 	}
 
-	strippedGames := handlers.StripSolutions(game)
-	if len(strippedGames) != 1 || strippedGames[0].Solution != nil {
+	strippedGame := handlers.StripSolutionFromGame(game)
+	if strippedGame.Solution != nil {
 		t.Error("Game ID was not stripped from game struct")
 	}
 }
